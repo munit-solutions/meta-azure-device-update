@@ -121,7 +121,7 @@ BBFILE_PATTERN_azure-device-update := "^${LAYERDIR}/"
 # This is applicable where we are using appends files to adjust other recipes.
 BBFILE_PRIORITY_azure-device-update = "16"
 LAYERDEPENDS_azure-device-update = "swupdate"
-LAYERSERIES_COMPAT_azure-device-update  = "warrior"
+LAYERSERIES_COMPAT_azure-device-update  = "zeus"
 
 
 # Layer-specific configuration variables.
@@ -346,7 +346,7 @@ FILES_${PN} += "${systemd_system_unitdir}/adu-agent.service"
 
 REQUIRED_DISTRO_FEATURES = "systemd"
 
-DEPENDS_${PN} += "azure-device-update deliveryoptimization-agent-service"
+DEPENDS += "azure-device-update deliveryoptimization-agent-service"
 
 RDEPENDS_${PN} += "azure-device-update deliveryoptimization-agent-service"
 

@@ -18,7 +18,7 @@ FILES_${PN} += "${systemd_system_unitdir}/adu-agent.service"
 
 REQUIRED_DISTRO_FEATURES = "systemd"
 
-DEPENDS_${PN} += "azure-device-update deliveryoptimization-agent-service"
+DEPENDS += "azure-device-update deliveryoptimization-agent-service"
 
 RDEPENDS_${PN} += "azure-device-update deliveryoptimization-agent-service"
 
