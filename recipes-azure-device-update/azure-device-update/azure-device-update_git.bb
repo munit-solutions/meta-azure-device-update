@@ -11,8 +11,8 @@
 
 LICENSE = "CLOSED"
 
-ADUC_GIT_BRANCH ?= "master"
-ADUC_SRC_URI ?= "git://github.com/Azure/adu-private-preview;branch=${ADUC_GIT_BRANCH}"
+ADUC_GIT_BRANCH ?= "main"
+ADUC_SRC_URI ?= "git://github.com/Azure/iot-hub-device-update;branch=${ADUC_GIT_BRANCH}"
 SRC_URI = "${ADUC_SRC_URI}"
 
 # This code handles setting variables for either git or for a local file.
