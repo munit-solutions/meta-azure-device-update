@@ -82,11 +82,9 @@ ADUGROUP = "adu"
 DOUSER = "do"
 DOGROUP = "do"
 
-PACKAGES =+ "${PN}-adu"
+USERADD_PACKAGES = "${PN}"
 
-USERADD_PACKAGES = "${PN}-adu"
-
-GROUPADD_PARAM_${PN}-adu = "\
+GROUPADD_PARAM_${PN} = "\
     --gid 800 --system adu ; \
     --gid 801 --system do ; \
     "
@@ -94,7 +92,7 @@ GROUPADD_PARAM_${PN}-adu = "\
 # USERADD_PARAM specifies command line options to pass to the
 # useradd command. Multiple users can be created by separating
 # the commands with a semicolon. Here we'll create adu user:
-USERADD_PARAM_${PN}-adu = "\
+USERADD_PARAM_${PN} = "\
     --uid 800 --system -g ${ADUGROUP} --home-dir /home/${ADUUSER} --no-create-home --shell /bin/false ${ADUUSER} ; \
     --uid 801 --system -g ${DOGROUP} -G ${ADUGROUP} --home-dir /home/${DOUSER} --no-create-home --shell /bin/false ${DOUSER} ; \
     "
@@ -129,4 +127,4 @@ do_install_append() {
 
 FILES_${PN} += "${bindir}/AducIotAgent"
 FILES_${PN} += "${libdir}/adu/* ${ADUC_DATA_DIR}/* ${ADUC_LOG_DIR}/* ${ADUC_CONF_DIR}/*"
-FILES_${PN}-adu += "/home/${ADUUSER}/* /home/$(DOUSER)/*"
+FILES_${PN} += "/home/${ADUUSER}/* /home/${DOUSER}/*"
