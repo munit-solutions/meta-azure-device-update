@@ -1,0 +1,22 @@
+# The fstab (/etc/fstab) (or file systems table) file is a system configuration
+# file on Debian systems. The fstab file typically lists all available disks and
+# disk partitions, and indicates how they are to be initialized or otherwise
+# integrated into the overall system's file system.
+# See https://wiki.debian.org/fstab
+
+# Default fstab entries
+/dev/root            /                    auto       defaults              1  1
+proc                 /proc                proc       defaults              0  0
+devpts               /dev/pts             devpts     mode=0620,gid=5       0  0
+tmpfs                /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0
+tmpfs                /var/volatile        tmpfs      defaults              0  0
+
+# Custom fstab entries for ADU raspberrypi3.
+# NOTE: these entries must be kept in sync with the corresponding .wks file.
+
+# Mount the boot partition that contains the bootloader.
+/dev/mmcblk0p1  /boot   vfat    defaults,sync   0   0
+
+# Mount the ADU specific partition for reading configuration and writing logs.
+# This partition is only accessible by adu user/group.
+/dev/mmcblk0p4  /adu    vfat    defaults,gid=800,uid=800 0   0

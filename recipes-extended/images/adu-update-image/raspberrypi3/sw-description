@@ -1,0 +1,31 @@
+software =
+{
+    version = "@@ADU_SOFTWARE_VERSION@@";
+    raspberrypi3 = {
+        hardware-compatibility: ["1.0"];
+        stable = {
+            copy1 : {
+                images: (
+                    {
+                        filename = "adu-base-image-raspberrypi3.ext4.gz";
+                        sha256 = "@adu-base-image-raspberrypi3.ext4.gz";
+                        type = "raw";
+                        compressed = true;
+                        device = "/dev/mmcblk0p2";
+                    }
+                );
+            };
+            copy2 : {
+                images: (
+                    {
+                        filename = "adu-base-image-raspberrypi3.ext4.gz";
+                        sha256 = "@adu-base-image-raspberrypi3.ext4.gz";
+                        type = "raw";
+                        compressed = true;
+                        device = "/dev/mmcblk0p3";
+                    }
+                );
+            };
+        }
+    }
+}

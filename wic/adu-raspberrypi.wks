@@ -1,0 +1,23 @@
+
+# Wic Kickstart file that defines which partitions are present in wic images.
+# See https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#ref-kickstart
+
+# NOTE: Wic will update the /etc/fstab file in the .wic* images,
+# but this file needs to also be in sync with the base-files fstab file
+# that gets provisioned in the rootfs. Otherwise, updates will install
+# an incompatible fstab file.
+
+# Boot partition containing bootloader. This must be the first entry.
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot --active --align 4096 --size 20 --fsoptions "defaults,sync"
+
+# Primary rootfs partition. This must be the second entry.
+part / --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootA --align 4096 --extra-space 512
+
+# Secondary rootfs partition used for A/B updating. Starts as a copy of the primary rootfs partition.
+# This must be the third entry.
+part --source rootfs --ondisk mmcblk0 --fstype=ext4 --label rootB --align 4096 --extra-space 512
+
+# ADU parition for ADU specfic configuration and logs.
+# This partition allows configuration and logs to persist across updates (similar to a user data partition).
+# The vfat file type allows this partition to be viewed and written to from Linux or Windows.
+part /adu --ondisk mmcblk0 --fstype=vfat --label adu --align 4096 --size 512 --fsoptions "defaults,gid=800,uid=800"
