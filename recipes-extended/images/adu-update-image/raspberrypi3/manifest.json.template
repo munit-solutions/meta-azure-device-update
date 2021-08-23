@@ -1,0 +1,26 @@
+{
+  "updateId": {
+      "provider": "<ADU_SOFTWARE_PROVIDER>",
+      "name": "<ADU_SOFTWARE_NAME>",
+      "version": "<ADU_SOFTWARE_VERSION>"
+  },
+  "updateType": "microsoft/swupdate:1",
+  "installedCriteria": "<ADU_INSTALLED_CRITERIA>",
+  "compatibility": [
+      {
+          "deviceManufacturer": "<MANUFACTURER>",
+          "deviceModel": "<MODEL>"
+      }
+  ],
+  "files": [
+      {
+          "filename": "<FILENAME>",
+          "sizeInBytes": <SIZE>,
+          "hashes": {
+              "sha256": "<SHA265>"
+          }
+      }
+  ],
+  "createdDateTime": "<CREATED_DATE_TIME>",
+  "manifestVersion": "2.0"
+}

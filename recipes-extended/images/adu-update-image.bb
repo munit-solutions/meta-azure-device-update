@@ -11,6 +11,7 @@ DEPENDS += "adu-base-image swupdate"
 
 SRC_URI = " \
     file://sw-description \
+    file://manifest.json.template \
 "
 
 # images to build before building adu update image
@@ -32,4 +33,4 @@ SWUPDATE_SIGNING = "RSA"
 SWUPDATE_PRIVATE_KEY = "${ADUC_PRIVATE_KEY}"
 SWUPDATE_PASSWORD_FILE = "${ADUC_PRIVATE_KEY_PASSWORD}"
 
-inherit swupdate
+inherit adu-swupdate
