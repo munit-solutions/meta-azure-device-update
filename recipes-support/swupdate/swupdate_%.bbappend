@@ -4,3 +4,5 @@
 FILESEXTRAPATHS_append := "${THISDIR}/${PN}:"
 
 PACKAGECONFIG_CONFARGS = ""
+
+DEPENDS_append += " mtd-utils"
