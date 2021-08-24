@@ -12,6 +12,7 @@ LICENSE = "CLOSED"
 
 DO_SRC_URI ?= "gitsm://github.com/microsoft/do-client;branch=main"
 SRC_URI = "${DO_SRC_URI}"
+SRCREV = "cd2eaadc0755c93bb31234a19a4577aced9845e5"
 
 # This code handles setting variables for either git or for a local file.
 # This is only while we are using private repos, once our repos are public,
@@ -19,7 +20,6 @@ SRC_URI = "${DO_SRC_URI}"
 python () {
     src_uri = d.getVar('DO_SRC_URI')
     if src_uri.startswith('git'):
-        d.setVar('SRCREV', d.getVar('AUTOREV'))
         d.setVar('PV', '1.0+git' + d.getVar('SRCPV'))
         d.setVar('S', d.getVar('WORKDIR') + "/git")
     elif src_uri.startswith('file'):

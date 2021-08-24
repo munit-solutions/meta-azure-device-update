@@ -14,6 +14,7 @@ LICENSE = "CLOSED"
 ADUC_GIT_BRANCH ?= "main"
 ADUC_SRC_URI ?= "git://github.com/Azure/iot-hub-device-update;branch=${ADUC_GIT_BRANCH}"
 SRC_URI = "${ADUC_SRC_URI}"
+SRCREV = "743bb72f5b5c017e5e643e99ae3c3c67c0ec2343"
 
 # This code handles setting variables for either git or for a local file.
 # This is only while we are using private repos, once our repos are public,
@@ -21,7 +22,6 @@ SRC_URI = "${ADUC_SRC_URI}"
 python () {
     src_uri = d.getVar('ADUC_SRC_URI')
     if src_uri.startswith('git'):
-        d.setVar('SRCREV', d.getVar('AUTOREV'))
         d.setVar('PV', '1.0+git' + d.getVar('SRCPV'))
         d.setVar('S', d.getVar('WORKDIR') + "/git")
     elif src_uri.startswith('file'):
