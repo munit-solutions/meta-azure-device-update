@@ -1,0 +1,22 @@
+From bec4a9eaa44947cd394da7b6c059352f194d3aa7 Mon Sep 17 00:00:00 2001
+From: Pierrick Curt <pierrick.curt@rtone.fr>
+Date: Tue, 20 Apr 2021 15:06:21 +0000
+Subject: [PATCH] Fix openssl libcrypto issue
+
+---
+ Release/cmake/cpprest_find_openssl.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Release/cmake/cpprest_find_openssl.cmake b/Release/cmake/cpprest_find_openssl.cmake
+index 93336636077a7e37ede0ba48908f71c0f7cb3b51..db10c82963ee0ea3a8d17fad9815905853a7703d 100644
+--- a/Release/cmake/cpprest_find_openssl.cmake
++++ b/Release/cmake/cpprest_find_openssl.cmake
+@@ -48,7 +48,7 @@ function(cpprest_find_openssl)
+       pkg_search_module(OPENSSL openssl)
+     endif()
+     if(OPENSSL_FOUND)
+-      target_link_libraries(cpprest PRIVATE ${OPENSSL_LDFLAGS})
++      target_link_libraries(cpprest INTERFACE ${OPENSSL_LDFLAGS})
+     else()
+       find_package(OpenSSL 1.0.0 REQUIRED)
+     endif()
