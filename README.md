@@ -42,7 +42,7 @@ This section describes the most important files of the Yocto build, including
 | meta-raspberrypi   | Implements the BSP layer for the RaspberryPi. Without this layer Yocto cannot be built to work on the raspberry pi. |
 | meta-swupdate   |  Adds support for a deployment mechanisms of Yocto's images based on swupdate project. |
 
-There are three publicly available meta layer: meta-openembedded(git://git.openembedded.org/meta-openembedded), meta-raspberrypi (git://git.yoctoproject.org/poky), meta-swupdate (git@github.com:sbabic/meta-swupdate.git).
+There are three publicly available meta layer: meta-openembedded(git://git.openembedded.org/meta-openembedded), meta-raspberrypi (git://github.com/agherzan/meta-raspberrypi.git), meta-swupdate (git@github.com:sbabic/meta-swupdate.git).
 
 #### bblayers.conf.sample
 
