@@ -20,7 +20,7 @@ IMAGE_INSTALL_append = " \
     packagegroup-core-boot \
     packagegroup-core-full-cmdline \
     openssh connman connman-client \
-    parted fw-env-conf \
+    parted fw-env-conf u-boot-fw-utils \
     adu-agent-service \
     "
 
