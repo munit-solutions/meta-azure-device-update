@@ -11,7 +11,9 @@
 LICENSE = "CLOSED"
 
 DO_SRC_URI ?= "gitsm://github.com/microsoft/do-client;branch=main"
-SRC_URI = "${DO_SRC_URI}"
+SRC_URI = "${DO_SRC_URI} \
+    file://0001-Add-boost-dependancies.patch \
+    "
 SRCREV = "cd2eaadc0755c93bb31234a19a4577aced9845e5"
 
 # This code handles setting variables for either git or for a local file.
