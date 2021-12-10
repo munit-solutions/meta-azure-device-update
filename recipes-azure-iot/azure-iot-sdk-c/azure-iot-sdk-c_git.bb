@@ -7,7 +7,7 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4283671594edec4c13aeb073c219237a"
 
 # We pull from master branch in order to get PnP APIs
-SRC_URI = "gitsm://github.com/Azure/azure-iot-sdk-c.git;branch=master"
+SRC_URI = "gitsm://github.com/Azure/azure-iot-sdk-c.git;branch=main"
 
 SRCREV = "6b6e2449672d229d4a0fc9503d8fd3b2b2dde5f1"
 PV = "1.0+git${SRCPV}"
