@@ -39,5 +39,5 @@ python do_adu_swuimage() {
 }
 
 deltask do_swuimage
-addtask do_swuimage after do_image_complete
-addtask do_adu_swuimage after do_swuimage
+addtask do_swuimage after do_unpack do_prepare_recipe_sysroot do_image_complete before do_build
+addtask do_adu_swuimage after do_swuimage do_image_complete before do_build
