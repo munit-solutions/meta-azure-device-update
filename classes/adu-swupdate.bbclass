@@ -1,4 +1,4 @@
-inherit swupdate
+inherit swupdate-image
 
 python do_adu_swuimage() {
     import shutil
