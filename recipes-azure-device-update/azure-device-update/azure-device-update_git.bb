@@ -147,7 +147,6 @@ do_install_append() {
 
     #create ADUC_CONF_DIR
     install -d ${D}${ADUC_CONF_DIR}
-    chgrp root ${D}${ADUC_CONF_DIR}
     chown root:${ADUGROUP} ${D}${ADUC_CONF_DIR}
     chmod 0774 ${D}${ADUC_CONF_DIR}
 
