@@ -18,7 +18,7 @@ do_install () {
     install -m 0644 ${WORKDIR}/register-adu-extensions.service ${D}${systemd_unitdir}/system
 }
 
-DEPENDS_${PN} += "azure-device-update"
+DEPENDS += "azure-device-update"
 
 RDEPENDS_${PN} += "azure-device-update"
 
