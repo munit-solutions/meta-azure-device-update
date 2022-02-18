@@ -31,6 +31,7 @@ FILES_${PN} = "/usr/share/azure-storage-blobs-cpp \
                 /usr/share/azure-storage-queues-cpp \
                 /usr/share/azure-storage-common-cpp \
                 /usr/share/azure-storage-files-shares-cpp \
+                /usr/share/azure-security-attestation-cpp \
                 /usr/share/azure-security-keyvault-secrets-cpp \
                 /usr/share/azure-security-keyvault-certificates-cpp \
                 /usr/share/azure-security-keyvault-keys-cpp \
