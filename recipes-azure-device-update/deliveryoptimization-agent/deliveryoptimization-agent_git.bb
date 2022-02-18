@@ -26,7 +26,7 @@ python () {
         d.setVar('S',  d.getVar('WORKDIR') + "/do-client")
 }
 
-DEPENDS = "boost cpprest libproxy msft-gsl"
+DEPENDS = "boost curl libproxy msft-gsl"
 
 inherit cmake
 

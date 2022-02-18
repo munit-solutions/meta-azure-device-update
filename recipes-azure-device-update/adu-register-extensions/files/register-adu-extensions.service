@@ -1,0 +1,9 @@
+[Unit]
+Description=Register Device Update extensions upon first boot
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c 'sleep 5 ; /usr/sbin/register-adu-extensions.sh'
+
+[Install]
+WantedBy=multi-user.target
