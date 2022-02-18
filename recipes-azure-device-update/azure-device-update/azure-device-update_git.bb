@@ -153,7 +153,7 @@ do_install_append() {
 
     #create ADUC_LOG_DIR
     install -d ${D}${ADUC_LOG_DIR}
-    chown ${ADUUSER}:${ADUGROUP} ${D}${ADUC_DOWNLOADS_DIR}
+    chown ${ADUUSER}:${ADUGROUP} ${D}${ADUC_LOG_DIR}
     chmod 0774 ${D}${ADUC_LOG_DIR}
 
     #install adu-shell to /usr/lib/adu directory.
