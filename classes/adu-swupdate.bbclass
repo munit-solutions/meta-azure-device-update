@@ -32,9 +32,9 @@ python do_adu_swuimage() {
         os.system('sed -i "s|<%s>|%s|g" %s' % (replace[0], replace[1], os.path.join(workdir, "manifest.json")))
 
     os.system("cd " + workdir + "; " + "")
-    shutil.copyfile(os.path.join(workdir, "manifest.json"), os.path.join(deploydir, d.getVar('IMAGE_NAME', True) + "-manifest.json"))
+    shutil.copyfile(os.path.join(workdir, "manifest.json"), os.path.join(deploydir, d.getVar('IMAGE_NAME', True) + ".importmanifest.json"))
 
-    line = 'ln -sf ' + d.getVar('IMAGE_NAME', True) + "-manifest.json " + d.getVar('IMAGE_LINK_NAME', True) + "-manifest.json"
+    line = 'ln -sf ' + d.getVar('IMAGE_NAME', True) + ".importmanifest.json " + d.getVar('IMAGE_LINK_NAME', True) + ".importmanifest.json"
     os.system("cd " + deploydir + "; " + line)
 }
 
