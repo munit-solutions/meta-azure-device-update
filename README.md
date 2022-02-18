@@ -4,6 +4,8 @@ This project meta-azure-device-update serves as a base-layer of embedding device
 
 This repository is maintained as a private initiative by me and you are welcome (but not obliged) to provide pull requests and help others as they open issues. Azure only supports `warrior` and leaves the rest up to the developer. This repository is thought to be a place for sharing best practices and to provide a basis for supporting other versions of yocto.
 
+The repository git://github.com/RPi-Distro/firmware-nonfree removed the revision `f0ad1a42b051aa9da1d9e1dc606dd68ec2f163a5` from upstream, which means, that we cannot test this package for `warrior` or `zeus` anymore without applying changes to the `meta-raspberry` layer. We haven't checked what other changes are needed and are for now only planning to support `dunfell` and upwards. Feel free to open a pull request if you have a patch for those (or any other) versions.
+
 This branch (including this readme file) will be updated as Azure releases new downloadable resources of the yocto-layer at [azure/iot-hub-device-update](https://github.com/Azure/iot-hub-device-update).
 
 The following lines are part of the latest readme provided by azure.
