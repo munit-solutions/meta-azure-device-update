@@ -10,7 +10,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI = "gitsm://github.com/Azure/azure-sdk-for-cpp.git;branch=main"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "cd9ae61a8ed437fbcb7c5f9629db10f5f51ba1af"
 PV = "1.0+git${SRCPV}"
 
 S = "${WORKDIR}/git"

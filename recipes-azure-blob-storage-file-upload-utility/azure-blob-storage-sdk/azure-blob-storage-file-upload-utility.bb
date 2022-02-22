@@ -10,7 +10,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 SRC_URI = "gitsm://github.com/Azure/azure-blob-storage-file-upload-utility.git;branch=main"
 
-SRCREV = "${AUTOREV}"
+SRCREV = "53d0081413a6ce3fe1a3f581bd5d7a1cbeee4526"
 PV = "1.0+git${SRCPV}"
 
 S = "${WORKDIR}/git"
