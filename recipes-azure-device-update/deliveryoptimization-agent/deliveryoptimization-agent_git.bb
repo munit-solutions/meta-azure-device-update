@@ -11,10 +11,8 @@
 LICENSE = "CLOSED"
 
 DO_SRC_URI ?= "gitsm://github.com/microsoft/do-client;branch=main"
-SRC_URI = "${DO_SRC_URI} \
-    file://0001-Add-boost-dependancies.patch \
-    "
-SRCREV = "cd2eaadc0755c93bb31234a19a4577aced9845e5"
+SRC_URI = "${DO_SRC_URI}"
+SRCREV = "ef70c5c8a59d46820c648f434249516957966e7f"
 
 # This code handles setting variables for either git or for a local file.
 # This is only while we are using private repos, once our repos are public,
@@ -28,7 +26,7 @@ python () {
         d.setVar('S',  d.getVar('WORKDIR') + "/do-client")
 }
 
-DEPENDS = "boost cpprest libproxy msft-gsl"
+DEPENDS = "boost curl libproxy msft-gsl"
 
 inherit cmake
 

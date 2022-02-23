@@ -605,7 +605,9 @@ IMAGE_INSTALL_append = " \
     packagegroup-core-full-cmdline \
     openssh connman connman-client \
     parted fw-env-conf \
+    binutils \
     adu-agent-service \
+    register-adu-extensions \
     "
 
 export IMAGE_BASENAME = "adu-base-image"
