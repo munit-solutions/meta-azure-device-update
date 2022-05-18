@@ -11,8 +11,8 @@
 
 LICENSE = "CLOSED"
 
-ADUC_GIT_BRANCH ?= "master"
-ADUC_SRC_URI ?= "git://github.com/Azure/adu-private-preview;branch=${ADUC_GIT_BRANCH}"
+ADUC_GIT_BRANCH ?= "main"
+ADUC_SRC_URI ?= "git://github.com/Azure/iot-hub-device-update;branch=${ADUC_GIT_BRANCH}"
 SRC_URI = "${ADUC_SRC_URI}"
 
 # This code handles setting variables for either git or for a local file.
@@ -149,13 +149,12 @@ do_install_append() {
 
     #create ADUC_CONF_DIR
     install -d ${D}${ADUC_CONF_DIR}
-    chgrp root ${D}${ADUC_CONF_DIR}
     chown root:${ADUGROUP} ${D}${ADUC_CONF_DIR}
     chmod 0774 ${D}${ADUC_CONF_DIR}
 
     #create ADUC_LOG_DIR
     install -d ${D}${ADUC_LOG_DIR}
-    chown ${ADUUSER}:${ADUGROUP} ${D}${ADUC_DOWNLOADS_DIR}
+    chown ${ADUUSER}:${ADUGROUP} ${D}${ADUC_LOG_DIR}
     chmod 0774 ${D}${ADUC_LOG_DIR}
 
     #install adu-shell to /usr/lib/adu directory.

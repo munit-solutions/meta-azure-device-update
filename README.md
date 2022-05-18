@@ -44,7 +44,7 @@ This section describes the most important files of the Yocto build, including
 | meta-raspberrypi   | Implements the BSP layer for the RaspberryPi. Without this layer Yocto cannot be built to work on the raspberry pi. |
 | meta-swupdate   |  Adds support for a deployment mechanisms of Yocto's images based on swupdate project. |
 
-There are three publicly available meta layer: meta-openembedded(git://git.openembedded.org/meta-openembedded), meta-raspberrypi (git://github.com/agherzan/meta-raspberrypi.git), meta-swupdate (git@github.com:sbabic/meta-swupdate.git).
+There are three publicly available meta layer: meta-openembedded(git://git.openembedded.org/meta-openembedded), meta-raspberrypi (git://git.yoctoproject.org/poky), meta-swupdate (git@github.com:sbabic/meta-swupdate.git).
 
 #### bblayers.conf.sample
 
@@ -198,6 +198,8 @@ This file locates at `meta-azure-device-update/recipes-azure-device-update/azure
 This file builds and installs our ADU sample code.
 
 ```shell
+# Build and install our ADU sample code.
+
 # Environment variables that can be used to configure the behavior of this recipe.
 # ADUC_GIT_BRANCH       Changes the branch that ADU code is pulled from.
 # ADUC_SRC_URI          Changes the URI where the ADU code is pulled from.
@@ -209,8 +211,8 @@ This file builds and installs our ADU sample code.
 
 LICENSE = "CLOSED"
 
-ADUC_GIT_BRANCH ?= "master"
-ADUC_SRC_URI ?= "git://github.com/Azure/adu-private-preview;branch=${ADUC_GIT_BRANCH}"
+ADUC_GIT_BRANCH ?= "main"
+ADUC_SRC_URI ?= "git://github.com/Azure/iot-hub-device-update;branch=${ADUC_GIT_BRANCH}"
 SRC_URI = "${ADUC_SRC_URI}"
 
 # This code handles setting variables for either git or for a local file.
@@ -226,8 +228,8 @@ python () {
         d.setVar('S',  d.getVar('WORKDIR') + "/adu-linux-client")
 }
 
-# ADUC depends on azure-iot-sdk-c and DO Agent SDK
-DEPENDS = "azure-iot-sdk-c deliveryoptimization-agent curl deliveryoptimization-sdk"
+# ADUC depends on azure-iot-sdk-c, azure-blob-storage-file-upload-utility, DO Agent SDK, and curl
+DEPENDS = "azure-iot-sdk-c azure-blob-storage-file-upload-utility deliveryoptimization-agent deliveryoptimization-sdk curl"
 
 inherit cmake useradd
 
@@ -267,11 +269,19 @@ EXTRA_OECMAKE += "-DDOSDK_INCLUDE_DIR=${WORKDIR}/recipe-sysroot/usr/include"
 # adu-hw-compat - to install the hardware compatibility file used by swupdate.
 # adu-log-dir - to create the temporary log directory in the image.
 # deliveryoptimization-agent-service - to install the delivery optimization agent for downloads.
-RDEPENDS_${PN} += "bash swupdate adu-pub-key adu-device-info-files adu-hw-compat adu-log-dir deliveryoptimization-agent-service"
+# curl - for running the diagnostics component
+RDEPENDS_${PN} += "bash swupdate adu-pub-key adu-device-info-files adu-hw-compat adu-log-dir deliveryoptimization-agent-service curl"
 
 INSANE_SKIP_${PN} += "installed-vs-shipped"
 
 ADUC_DATA_DIR = "/var/lib/adu"
+ADUC_EXTENSIONS_DIR = "${ADUC_DATA_DIR}/extensions"
+ADUC_EXTENSIONS_INSTALL_DIR = "${ADUC_EXTENSIONS_DIR}/sources"
+ADUC_COMPONENT_ENUMERATOR_EXTENSION_DIR = "${ADUC_EXTENSIONS_DIR}/component_enumerator"
+ADUC_CONTENT_DOWNLOADER_EXTENSION_DIR = "${ADUC_EXTENSIONS_DIR}/content_downloader"
+ADUC_UPDATE_CONTENT_HANDLER_EXTENSION_DIR = "${ADUC_EXTENSIONS_DIR}/update_content_handlers"
+ADUC_DOWNLOADS_DIR = "${ADUC_DATA_DIR}/downloads"
+
 ADUC_LOG_DIR = "/adu/logs"
 ADUC_CONF_DIR = "/adu"
 
@@ -291,34 +301,70 @@ GROUPADD_PARAM_${PN}-adu = "\
 
 # USERADD_PARAM specifies command line options to pass to the
 # useradd command. Multiple users can be created by separating
-# the commands with a semicolon. Here we'll create adu user:
+# the commands with a semicolon. 
+# Here we'll create 'adu' user, and 'do' user.
+# To download the update payload file, 'adu' user must be a member of 'do' group.
+# To save downloaded file into 'adu' downloads directory, 'do' user must be a member of 'adu' group.
 USERADD_PARAM_${PN}-adu = "\
-    --uid 800 --system -g ${ADUGROUP} --home-dir /home/${ADUUSER} --no-create-home --shell /bin/false ${ADUUSER} ; \
+    --uid 800 --system -g ${ADUGROUP} -G ${DOGROUP} --home-dir /home/${ADUUSER} --no-create-home --shell /bin/false ${ADUUSER} ; \
     --uid 801 --system -g ${DOGROUP} -G ${ADUGROUP} --home-dir /home/${DOUSER} --no-create-home --shell /bin/false ${DOUSER} ; \
     "
-
+    
 do_install_append() {
     #create ADUC_DATA_DIR
     install -d ${D}${ADUC_DATA_DIR}
     chgrp ${ADUGROUP} ${D}${ADUC_DATA_DIR}
+    chown ${ADUUSER}:${ADUGROUP} ${D}${ADUC_DATA_DIR}
     chmod 0770 ${D}${ADUC_DATA_DIR}
+
+    #create ADUC_EXTENSIONS_DIR
+    install -d ${D}${ADUC_EXTENSIONS_DIR}
+    chgrp ${ADUGROUP} ${D}${ADUC_EXTENSIONS_DIR}
+    chmod 0770 ${D}${ADUC_EXTENSIONS_DIR}
+
+    #create ADUC_EXTENSIONS_INSTALL_DIR
+    install -d ${D}${ADUC_EXTENSIONS_INSTALL_DIR}
+    chgrp ${ADUGROUP} ${D}${ADUC_EXTENSIONS_INSTALL_DIR}
+    chmod 0770 ${D}${ADUC_EXTENSIONS_INSTALL_DIR}
+
+    #create ADUC_COMPONENT_ENUMERATOR_EXTENSION_DIR
+    install -d ${D}${ADUC_COMPONENT_ENUMERATOR_EXTENSION_DIR}
+    chgrp ${ADUGROUP} ${D}${ADUC_COMPONENT_ENUMERATOR_EXTENSION_DIR}
+    chmod 0770 ${D}${ADUC_COMPONENT_ENUMERATOR_EXTENSION_DIR}
+
+    #create ADUC_CONTENT_DOWNLOADER_EXTENSION_DIR
+    install -d ${D}${ADUC_CONTENT_DOWNLOADER_EXTENSION_DIR}
+    chgrp ${ADUGROUP} ${D}${ADUC_CONTENT_DOWNLOADER_EXTENSION_DIR}
+    chmod 0770 ${D}${ADUC_CONTENT_DOWNLOADER_EXTENSION_DIR}
+
+    #create ADUC_UPDATE_CONTENT_HANDLER_EXTENSION_DIR
+    install -d ${D}${ADUC_UPDATE_CONTENT_HANDLER_EXTENSION_DIR}
+    chgrp ${ADUGROUP} ${D}${ADUC_UPDATE_CONTENT_HANDLER_EXTENSION_DIR}
+    chmod 0770 ${D}${ADUC_UPDATE_CONTENT_HANDLER_EXTENSION_DIR}
+
+    #create ADUC_DOWNLOADS_DIR
+    install -d ${D}${ADUC_DOWNLOADS_DIR}
+    chown ${ADUUSER}:${ADUGROUP} ${D}${ADUC_DOWNLOADS_DIR}
+    chmod 0770 ${D}${ADUC_DOWNLOADS_DIR}
 
     #create ADUC_CONF_DIR
     install -d ${D}${ADUC_CONF_DIR}
-    chgrp ${ADUGROUP} ${D}${ADUC_CONF_DIR}
+    chown root:${ADUGROUP} ${D}${ADUC_CONF_DIR}
     chmod 0774 ${D}${ADUC_CONF_DIR}
 
     #create ADUC_LOG_DIR
     install -d ${D}${ADUC_LOG_DIR}
-    chgrp ${ADUGROUP} ${D}${ADUC_LOG_DIR}
+    chown ${ADUUSER}:${ADUGROUP} ${D}${ADUC_LOG_DIR}
     chmod 0774 ${D}${ADUC_LOG_DIR}
 
     #install adu-shell to /usr/lib/adu directory.
     install -d ${D}${libdir}/adu
 
     install -m 0550 ${S}/src/adu-shell/scripts/adu-swupdate.sh ${D}${libdir}/adu
+    chown ${ADUUSER}:${ADUGROUP} ${D}${libdir}/adu
 
     #set owner for adu-shell
+    chmod 0550 ${D}${libdir}/adu/adu-shell
     chown root:${ADUGROUP} ${D}${libdir}/adu/adu-shell
 
     #set S UID for adu-shell
@@ -327,7 +373,10 @@ do_install_append() {
 
 FILES_${PN} += "${bindir}/AducIotAgent"
 FILES_${PN} += "${libdir}/adu/* ${ADUC_DATA_DIR}/* ${ADUC_LOG_DIR}/* ${ADUC_CONF_DIR}/*"
+FILES_${PN} += "${ADUC_EXTENSIONS_DIR}/* ${ADUC_EXTENSIONS_INSTALL_DIR}/* ${ADUC_DOWNLOADS_DIR}/*"
+FILES_${PN} += "${ADUC_COMPONENT_ENUMERATOR_EXTENSION_DIR}/* ${ADUC_CONTENT_DOWNLOADER_EXTENSION_DIR}/* ${ADUC_UPDATE_CONTENT_HANDLER_EXTENSION_DIR}/*"
 FILES_${PN}-adu += "/home/${ADUUSER}/* /home/$(DOUSER)/*"
+
 ```
 
 #### adu-agent-service.bb
